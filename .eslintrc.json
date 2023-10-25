@@ -1,3 +1,9 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["next/core-web-vitals", "fbjs"],
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "max-len": ["error", {
+      "code": 150
+    }] 
+  }
 }

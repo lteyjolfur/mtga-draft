@@ -3,11 +3,11 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: "cards.scryfall.io"
-      }
-    ]
-  }
+        hostname: 'cards.scryfall.io',
+      },
+    ],
+  },
 
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

@@ -1,108 +1,81 @@
-'use client'
-import Color from '@/app/(shared-components)/color'
-import { Fragment, useState } from 'react'
+'use client';
+'use strict';
 
-const tricks = {
-  w:[
-    'Archon\'s Glory',
-    'Break the Spell',
-    'Kellan\'s Lightblades',
-    'Moment of Valor',
-    'Stroke of Midnight'
-  ],
-  u:[
-    'Misleading Motes',
-    "Obyra's Attendants // Desperate Parry",
-    'Water Wings',
-  ],
-  b:[
-    'Candy Grapple',
-    'Faerie Fencing',
-    'Feed the Cauldron',
-    'Not Dead After All',
-    'Rat Out',
-    'Shatter the Oath',
-    'Sugar Rush',
-  ],
-  r:[
-    'Flick a Coin',
-    'Frantic Firebolt',
-    'Gnawing Crescendo',
-    'Kindled Heroism',
-    "Minecart Daredevil // Ride the Rails",
-    'Monstrous Rage',
-    'Stonesplitter Bolt',
-    'Torch the Tower',
-    "Two-Headed Hunter // Twice the Rage",
-  ],
-  g:[
-    'Leaping Ambush',
-    'Royal Treatment',
-    'Titanic Growth',
-  ],
-  dimir:[
-    'Obyra, Dreaming Duelist',
-    "Threadbind Clique // Rip the Seams",
-  ],
-  golgari:["Gingerbread Hunter // Puny Snack"],
-  izzet:["Frolicking Familiar // Blow Off Steam"],
-}
+import Color from '@/app/(shared-components)/color';
+import { initColors } from '@/app/helpers'; 
+import { Fragment, useState } from 'react';
 
-const colors = Object.keys(tricks) 
 
-const initColors = () => {
-  const dColors = {}
-  colors.forEach((color) => {
-    dColors[color] = false
-  })
-  return dColors
-}
 
-export default function WOE({cards}) {
-  const [dColors, setDColors] = useState(initColors())
+
+
+const setColorPairs = (newDColors) => {
+  const {w, u, b, r, g} = newDColors;
+  const guilds = {
+    azorius: w && u,
+    orzhov: w && b,
+    dimir: u && b,
+    rakdos: b && r,
+    gruul: r && g,
+    selesnya: w && g,
+    izzet: u && r,
+    golgari: g && b,
+    boros: w && r,
+    simic: u && g,
+  };
+  return {
+    ...newDColors,
+    ...guilds,
+  };
+};
+
+export default function WOE({cards, tricks}) {
+  const [dColors, setDColors] = useState(initColors(tricks));
+  const [colors] = useState(Object.keys(tricks));
   
   const handleCheckbox = (e) => {
-    console.log(e.target)
-    console.log(e.target.value)
-    const color = e.target.value
-    setDColors({
+    const color = e.target.value;
+    let newDColors = {
       ...dColors,
-      [color]:!dColors[color]
-    })
+      [color]:!dColors[color],
+    };
+    newDColors = setColorPairs(newDColors);
+    setDColors(newDColors);
     
-  }
+  };
 
-  let filtered = Object.keys(dColors).filter((key)=>(dColors[key]=== true))
-  if (filtered.length === 0){
-    filtered = Object.keys(dColors)
+  let filtered = Object.keys(dColors).filter((key) => (dColors[key] === true));
+  if (filtered.length === 0) {
+    filtered = Object.keys(dColors);
   }
   return (
     <>
-    {colors.map((key) => (
-      <Fragment key={key}>
-        <span className='text-3xl'>
-        {key.length===1 ?(
-          <i className={`ms ms-${key.toLowerCase()}`}/>
-        ) :
-        (
-          <i className={`ms ms-guild-${key.toLowerCase()}`}/>
-        )}
-        </span>
+      {colors.map((key) => (
+        <Fragment key={key}>
+          <span className="text-3xl">
+            {key.length === 1 ? (
+              <i className={`ms ms-${key.toLowerCase()}`}/>
+            ) :
+              (
+                <i className={`ms ms-guild-${key.toLowerCase()}`}/>
+              )}
+          </span>
 
-       <input
-        onClick={handleCheckbox}
-        type="checkbox"
-        id={key}
-        name={key}
-        value={key}/>
-        {' '}
+          <input
+            onClick={handleCheckbox}
+            type="checkbox"
+            id={key}
+            checked={dColors[key]}
+            name={key}
+            value={key}/>
+          {' '}
         </Fragment>
-    ))}
+      ))}
      
 
-     {filtered?.map((key) => (
-      <Color key={key} cards={tricks[key]} setCards={cards}>{key.toUpperCase()}</Color>
-    ))}
+      {filtered?.map((key) => (
+        <Color key={key} cards={tricks[key]} setCards={cards}>{key.toUpperCase()}</Color>
+      ))}
     </>
-  )
+  );
 }

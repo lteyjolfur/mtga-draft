@@ -2,7 +2,7 @@ import fs from 'fs'
 
 const  getSetInfoInit = async (name) => {
 
-    const filePath = 'data/woe.json'
+    const filePath = `data/${name}.json`
     let res
     if (fs.existsSync(filePath)) {
       console.log('File exists. do nothing');
