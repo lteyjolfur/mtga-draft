@@ -52,7 +52,7 @@ export default function WOE({cards, tricks}) {
     <>
       {colors.map((key) => (
         <Fragment key={key}>
-          <span className="text-3xl">
+          <span className={`text-3xl ${dColors[key] && 'text-yellow-300'}`}>
             {key.length === 1 ? (
               <i className={`ms ms-${key.toLowerCase()}`}/>
             ) :
@@ -61,14 +61,18 @@ export default function WOE({cards, tricks}) {
               )}
           </span>
 
-          <input
+          {key.length === 1 ? <input
             onClick={handleCheckbox}
             type="checkbox"
+            className="cursor-pointer"
             id={key}
             checked={dColors[key]}
             name={key}
-            value={key}/>
+            value={key}/> :
+            <span className="mr-3"/>
+          }
           {' '}
+          {key === 'g' && <span className="mr-10"/>}
         </Fragment>
       ))}
      
