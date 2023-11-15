@@ -61,7 +61,7 @@ export default function WOE({cards, tricks}) {
               )}
           </span>
 
-          {key.length === 1 ? <input
+          {key.length === 1 && key !== 'c' ? <input
             onClick={handleCheckbox}
             type="checkbox"
             className="cursor-pointer"

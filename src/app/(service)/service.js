@@ -6,7 +6,7 @@ const getSetInfoInit = async (name) => {
   let res;
   if (fs.existsSync(filePath)) {
     console.log('File exists. do nothing');
-    return;
+    return undefined;
   } else {
     res = await fetch('https://api.scryfall.com/cards/search?q=set%3A' + name);
   } 
@@ -14,6 +14,7 @@ const getSetInfoInit = async (name) => {
   if (!res.ok) {
     // This will activate the closest `error.js` Error Boundary
     throw new Error('Failed to fetch data');
+  
   }
 
   return res.json();
