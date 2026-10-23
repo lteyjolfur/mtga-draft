@@ -2,32 +2,12 @@
 'use strict';
 
 import Color from '@/app/(shared-components)/color';
-import { initColors } from '@/app/helpers'; 
+import { initColors, setColorPairs, getVisibleColors } from '@/app/helpers'; 
 import { Fragment, useState } from 'react';
 
 
 
 
-
-const setColorPairs = (newDColors) => {
-  const {w, u, b, r, g} = newDColors;
-  const guilds = {
-    azorius: w && u,
-    orzhov: w && b,
-    dimir: u && b,
-    rakdos: b && r,
-    gruul: r && g,
-    selesnya: w && g,
-    izzet: u && r,
-    golgari: g && b,
-    boros: w && r,
-    simic: u && g,
-  };
-  return {
-    ...newDColors,
-    ...guilds,
-  };
-};
 
 export default function WOE({cards, tricks}) {
   const [dColors, setDColors] = useState(initColors(tricks));
@@ -44,10 +24,7 @@ export default function WOE({cards, tricks}) {
     
   };
 
-  let filtered = Object.keys(dColors).filter((key) => (dColors[key] === true));
-  if (filtered.length === 0) {
-    filtered = Object.keys(dColors);
-  }
+  const filtered = getVisibleColors(dColors);
   return (
     <>
       {colors.map((key) => (
