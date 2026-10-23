@@ -26,8 +26,35 @@ const processCards = (cards) => {
   }, {});
 }; 
 
+const setColorPairs = (newDColors) => {
+  const {w, u, b, r, g} = newDColors;
+  const guilds = {
+    azorius: w && u,
+    orzhov: w && b,
+    dimir: u && b,
+    rakdos: b && r,
+    gruul: r && g,
+    selesnya: w && g,
+    izzet: u && r,
+    golgari: g && b,
+    boros: w && r,
+    simic: u && g,
+  };
+  return {
+    ...newDColors,
+    ...guilds,
+  };
+};
+
+const getVisibleColors = (dColors) => {
+  const filtered = Object.keys(dColors).filter((key) => (dColors[key] === true));
+  return filtered.length === 0 ? Object.keys(dColors) : filtered;
+};
+
 export {
   initColors,
+  setColorPairs,
+  getVisibleColors,
   saveSet,
   loadSet,
   processCards,
